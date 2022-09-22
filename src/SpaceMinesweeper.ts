@@ -98,18 +98,22 @@ export class SpaceMinesweeper extends gfx.GfxApp
         // on different devices regardless of the framerate.
         const mineSpawnInterval = .5;
         const mineSpeed = 0.1 * deltaTime;
+        const shipSpeed = 0.75 * deltaTime;
 
-        // Point the ship wherever the mouse cursor is located.
-        // Note that this.mousePosition has already been converted to
-        // normalized device coordinates.
-        this.ship.lookAt(this.mousePosition);
-
-        if(this.ship.position.distanceTo(this.shipTarget) > 0)
+        if(this.ship.position.distanceTo(this.shipTarget) > 0.01)
         {
             const shipMovement = gfx.Vector2.subtract(this.shipTarget, this.ship.position);
             shipMovement.normalize();
+            shipMovement.multiplyScalar(shipSpeed);
 
             this.ship.position.add(shipMovement);
+        }
+        else
+        {
+            // Point the ship wherever the mouse cursor is located.
+            // Note that this.mousePosition has already been converted to
+            // normalized device coordinates.
+            this.ship.lookAt(this.mousePosition);
         }
 
         // Mine movement
@@ -144,6 +148,7 @@ export class SpaceMinesweeper extends gfx.GfxApp
 
     onMouseDown(event: MouseEvent): void {
         this.shipTarget = this.getNormalizedDeviceCoordinates(event.x, event.y);
+        this.ship.lookAt(this.mousePosition);
     }
 
     // This function creates a new mine.  In order to prevent infinite mines,
@@ -161,7 +166,8 @@ export class SpaceMinesweeper extends gfx.GfxApp
 
         // Compute a random direction ahead of the ship and then translate
         // mine far enough away that it is outside the edge of the screen.
-        mineInstance.rotation = this.ship.rotation + (Math.random() * Math.PI / 3 - Math.PI / 6);
+        //mineInstance.rotation = this.ship.rotation + (Math.random() * Math.PI / 3 - Math.PI / 6);
+        mineInstance.rotation = Math.random() * Math.PI * 2;
         mineInstance.translateY(mineSpawnDistance);
         
         // If we are over the mine limit, remove the oldest one!
