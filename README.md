@@ -1,6 +1,6 @@
 # Lecture 6: 2D Graphics Programming (Part 2)
 
-Detailed explanation of this code can be found in the lecture video (will be added after class).
+Detailed explanation of this code can be found in the [lecture video](https://mediaspace.umn.edu/media/t/1_xbujs6ph).
 
 You can run the program on [GitHub pages](https://csci-4611-fall-2022.github.io/Lecture-6).
 
@@ -10,7 +10,9 @@ To work with this code, you will first need to install [Node.js 16.17.0 LTS](htt
 
 ## Topics
 
-- TBD
+- More complex user-controlled ship movement
+- Manipulating scale to create explosion animations
+- Using the debugger to analyze memory and find errors
 
 ## Running
 
