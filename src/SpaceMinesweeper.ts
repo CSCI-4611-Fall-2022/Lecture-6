@@ -24,6 +24,8 @@ export class SpaceMinesweeper extends gfx.GfxApp
     // normalized device coordinates.
     private mousePosition: gfx.Vector2;
 
+    private shipTarget: gfx.Vector2;
+
     // Member variable to record the last time a mine was spawned
     private timeSinceLastMineSpawn = 0;
 
@@ -41,6 +43,7 @@ export class SpaceMinesweeper extends gfx.GfxApp
         this.mines = new gfx.Transform2();
         this.mousePosition = new gfx.Vector2();
         this.timeSinceLastMineSpawn = 0;
+        this.shipTarget = new gfx.Vector2();
 
         // This parameter zooms in on the scene to fit within the window.
         // Other options include FIT or STRETCH.
@@ -101,6 +104,14 @@ export class SpaceMinesweeper extends gfx.GfxApp
         // normalized device coordinates.
         this.ship.lookAt(this.mousePosition);
 
+        if(this.ship.position.distanceTo(this.shipTarget) > 0)
+        {
+            const shipMovement = gfx.Vector2.subtract(this.shipTarget, this.ship.position);
+            shipMovement.normalize();
+
+            this.ship.position.add(shipMovement);
+        }
+
         // Mine movement
         this.mines.children.forEach((mineElem: gfx.Transform2)=>{
 
@@ -129,6 +140,10 @@ export class SpaceMinesweeper extends gfx.GfxApp
     // they are in the same reference frame as the objects in our scene.
     onMouseMove(event: MouseEvent): void {
         this.mousePosition = this.getNormalizedDeviceCoordinates(event.x, event.y);
+    }
+
+    onMouseDown(event: MouseEvent): void {
+        this.shipTarget = this.getNormalizedDeviceCoordinates(event.x, event.y);
     }
 
     // This function creates a new mine.  In order to prevent infinite mines,
