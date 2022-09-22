@@ -12,6 +12,7 @@ export class SpaceMinesweeper extends gfx.GfxApp
     private ship: gfx.Rectangle;
     private star: gfx.Rectangle;
     private mine: gfx.Rectangle;
+    private explosion: gfx.Circle;
 
     // These transforms are "groups" that are used to hold instances
     // of the same base object when they need to be placed in the scene
@@ -19,6 +20,7 @@ export class SpaceMinesweeper extends gfx.GfxApp
     // you can iterate through to access all these objects.
     private stars: gfx.Transform2;
     private mines: gfx.Transform2;
+    private explosions: gfx.Transform2;
 
     // Member variable to store the current position of the mouse in
     // normalized device coordinates.
@@ -39,8 +41,10 @@ export class SpaceMinesweeper extends gfx.GfxApp
         this.ship = new gfx.Rectangle();
         this.star = new gfx.Rectangle();
         this.mine = new gfx.Rectangle();
+        this.explosion = new gfx.Circle(0.1, 30);
         this.stars = new gfx.Transform2();
         this.mines = new gfx.Transform2();
+        this.explosions = new gfx.Transform2();
         this.mousePosition = new gfx.Vector2();
         this.timeSinceLastMineSpawn = 0;
         this.shipTarget = new gfx.Vector2();
@@ -78,12 +82,15 @@ export class SpaceMinesweeper extends gfx.GfxApp
         this.ship.material.texture = new gfx.Texture('./ship.png');
         this.ship.scale.set(0.08, 0.08);
 
+        this.explosion.material.color.set(1, 0, 0);
+
         // Add all the objects to the scene. Note that the order is important!
         // Objects that are added later will be rendered on top of objects
         // that are added first. This is most important for the stars; because
         // they are in the distant background, they should be added first.
         this.scene.add(this.stars);
         this.scene.add(this.mines);
+        this.scene.add(this.explosions);
         this.scene.add(this.ship);
     }
 
