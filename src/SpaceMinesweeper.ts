@@ -106,6 +106,7 @@ export class SpaceMinesweeper extends gfx.GfxApp
         const mineSpawnInterval = .5;
         const mineSpeed = 0.1 * deltaTime;
         const shipSpeed = 0.75 * deltaTime;
+        const explosionSpeed = 1 * deltaTime;
 
         if(this.ship.position.distanceTo(this.shipTarget) > 0.01)
         {
@@ -132,6 +133,11 @@ export class SpaceMinesweeper extends gfx.GfxApp
             mineToShip.multiplyScalar(mineSpeed);
             mineElem.position.add(mineToShip);
 
+        });
+
+        // Explosion animations
+        this.explosions.children.forEach((explosionElem: gfx.Transform2)=>{
+            
         });
 
         // Check to see if enough time has elapsed since the last
@@ -163,7 +169,7 @@ export class SpaceMinesweeper extends gfx.GfxApp
     private spawnMine(): void
     {
         const mineSpawnDistance = 1.25;
-        const mineLimit = 20;
+        const mineLimit = 10;
         
         // This creates a new instance of the base mine object.
         // Note that the Mine class extends the ShapeInstance class,
@@ -180,6 +186,10 @@ export class SpaceMinesweeper extends gfx.GfxApp
         // If we are over the mine limit, remove the oldest one!
         if(this.mines.children.length > mineLimit)
         {
+            const explosionInstance = new gfx.ShapeInstance(this.explosion);
+            explosionInstance.position.copy(this.mines.children[0].position);
+            explosionInstance.scale.set(0.01, 0.01);
+            this.explosions.add(explosionInstance);
             this.mines.children[0].remove();
         }
     }
