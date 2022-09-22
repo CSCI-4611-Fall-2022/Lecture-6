@@ -82,7 +82,7 @@ export class SpaceMinesweeper extends gfx.GfxApp
         this.ship.material.texture = new gfx.Texture('./ship.png');
         this.ship.scale.set(0.08, 0.08);
 
-        this.explosion.material.color.set(1, 0, 0);
+        this.explosion.material.color.set(1, 0, 0, 0.5);
 
         // Add all the objects to the scene. Note that the order is important!
         // Objects that are added later will be rendered on top of objects
@@ -106,7 +106,7 @@ export class SpaceMinesweeper extends gfx.GfxApp
         const mineSpawnInterval = .5;
         const mineSpeed = 0.1 * deltaTime;
         const shipSpeed = 0.75 * deltaTime;
-        const explosionSpeed = 1 * deltaTime;
+        const explosionSpeed = 2 * deltaTime;
 
         if(this.ship.position.distanceTo(this.shipTarget) > 0.01)
         {
@@ -137,7 +137,13 @@ export class SpaceMinesweeper extends gfx.GfxApp
 
         // Explosion animations
         this.explosions.children.forEach((explosionElem: gfx.Transform2)=>{
-            
+            explosionElem.scale.x += explosionSpeed;
+            explosionElem.scale.y += explosionSpeed;
+
+            if(explosionElem.scale.x > 1)
+            {
+                explosionElem.remove();
+            }
         });
 
         // Check to see if enough time has elapsed since the last
@@ -188,7 +194,7 @@ export class SpaceMinesweeper extends gfx.GfxApp
         {
             const explosionInstance = new gfx.ShapeInstance(this.explosion);
             explosionInstance.position.copy(this.mines.children[0].position);
-            explosionInstance.scale.set(0.01, 0.01);
+            explosionInstance.scale.set(0.25, 0.25);
             this.explosions.add(explosionInstance);
             this.mines.children[0].remove();
         }
